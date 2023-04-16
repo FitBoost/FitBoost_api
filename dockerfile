@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Exposez le port sur lequel l'API va écouter
-EXPOSE 8080
+EXPOSE 8000
 
 # Démarrez l'application
 CMD [ "npm", "start" ]
