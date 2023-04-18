@@ -3,9 +3,8 @@ import { verifyToken } from "../service/user.service";
 import Log from "../utils/Log";
 
 const checkAuth =
-  (role?: "ADMIN" | "USER") =>
-  (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization?.split("Scla ")[1];
+  (role?: 0 | 1 | 2) => (req: Request, res: Response, next: NextFunction) => {
+    const token = req.headers.authorization?.split("Bearer ")[1];
     if (!token) {
       return res.status(401).send("No token found");
     }

@@ -46,6 +46,16 @@ export const _getUser = async (id: string) => {
 
 export const createUser = async (input: DocumentDefinition<UserDocument>) => {
   try {
+    const email = input.email;
+    const username = input.username;
+
+    const userByMail = await UserModel.findOne({ email: email });
+    const userByUsername = await UserModel.findOne({ username: username });
+
+    if (userByMail || userByUsername) {
+      throw new Error("User already exists");
+    }
+
     return await UserModel.create(input);
   } catch (error) {
     Log.error(error);

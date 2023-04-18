@@ -7,7 +7,7 @@ export interface UserDocument extends mongoose.Document {
   username: string;
   email: string;
   password: string;
-  role: string;
+  role: number;
   watch: {
     ip: string | null;
     port: number | null;
@@ -25,7 +25,6 @@ const UserSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       minlength: 3,
       maxlength: 20,
@@ -33,7 +32,6 @@ const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       minlength: 5,
       maxlength: 50,
@@ -45,9 +43,9 @@ const UserSchema = new mongoose.Schema(
       maxlength: 1024,
     },
     role: {
-      type: String,
+      type: Number,
       require: true,
-      default: "USER",
+      default: "0",
     },
     watch: {
       ip: { type: String, default: null },

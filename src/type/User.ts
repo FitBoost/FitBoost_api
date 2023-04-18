@@ -4,7 +4,7 @@ export type User = {
   email: string;
   password: string;
   watch: string;
-  role: string;
+  role: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
