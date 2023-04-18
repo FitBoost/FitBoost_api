@@ -14,6 +14,7 @@ const checkAuth =
       if (!user) {
         return res.status(404).send("Not authorized");
       }
+
       if (role) {
         if (user.role !== role) {
           return res.status(403).send("Not authorized");
