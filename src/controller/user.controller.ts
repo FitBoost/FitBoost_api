@@ -16,7 +16,10 @@ export const createUserHandler = async (req: Request, res: Response) => {
     return res.status(201).send(omit(user?.toJSON(), "password"));
   } catch (error: any) {
     Log.error(error.message);
-    return res.status(409).send(error.message);
+    return res.status(409).json({
+      status: 409,
+      message: error.message,
+    });
   }
 };
 
@@ -27,7 +30,10 @@ export const loginUserHandler = async (req: Request, res: Response) => {
     return res.status(200).send(user);
   } catch (error: any) {
     Log.error(error.message);
-    return res.status(409).send(error.message);
+    return res.status(409).send({
+      status: 409,
+      message: error.message,
+    });
   }
 };
 
@@ -36,19 +42,28 @@ export const getAllUsersHandler = async (_: Request, res: Response) => {
   try {
     const users = await getUsers();
     if (!users) {
-      return res.status(404).send("No users found");
+      return res.status(404).json({
+        status: 404,
+        message: "No users found",
+      });
     }
-    return res.status(200).send(users);
+    return res.status(200).json({
+      status: 200,
+      data: users,
+    });
   } catch (error: any) {
     Log.error(error.message);
-    return res.status(409).send(error.message);
+    return res.status(409).json({
+      status: 409,
+      message: error.message,
+    });
   }
 };
 
 export const getCurrentUserHandler = async (req: Request, res: Response) => {
   Log.info("/GET /api/auth");
 
-  const token = req.headers.authorization?.split("Scla ")[1];
+  const token = req.headers.authorization?.split("Bearer ")[1];
   if (!token) {
     return res.status(401).send("No token found");
   }
