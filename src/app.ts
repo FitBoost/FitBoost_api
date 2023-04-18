@@ -2,7 +2,7 @@ import express from "express";
 import { APP } from "../config/default";
 import { dbConnect } from "./db/connect";
 import Log from "./utils/Log";
-import routes from "./routes";
+import routes from "./routes/routes";
 import cors from "cors";
 
 const main = async () => {
