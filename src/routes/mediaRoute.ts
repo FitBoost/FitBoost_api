@@ -1,6 +1,7 @@
 import { Express, Request, Response } from "express";
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 
 export default (app: Express) => {
   app.get("/api/video/:id", (req: Request, res: Response) => {
@@ -35,6 +36,28 @@ export default (app: Express) => {
       };
       res.writeHead(200, head);
       fs.createReadStream(videoPath).pipe(res);
+    }
+  });
+
+  app.get("/api/image/:id", async (req: Request, res: Response) => {
+    const id = req.params.id;
+    try {
+      const array = __dirname.split("\\");
+      const replacement = "media";
+      array[array.length - 1] = replacement;
+      const imagePath = path.join(...array, `${id}.jpg`);
+
+      const image = sharp(imagePath); // Charger l'image avec sharp
+
+      // Redimensionner l'image
+      const resizedImage = await image.resize(500, 500).toBuffer(); // Redimensionner l'image à 300x300 pixels
+
+      // Envoyer l'image sous forme de flux (stream) à l'application mobile
+      res.set("Content-Type", "image/jpeg");
+      res.send(resizedImage);
+    } catch (err) {
+      console.error("Error retrieving image", err);
+      res.status(500).send("Error retrieving image");
     }
   });
 };
